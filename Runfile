@@ -1,0 +1,11 @@
+task.add('', () => {
+
+})
+
+task.add('git', () => {
+  var message = argv._[1] || 'update'
+  exec('git add -A')
+  exec(`git commit -m "${message}"`)
+  exec('git push origin master')
+})
+  

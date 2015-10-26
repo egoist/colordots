@@ -1,0 +1,109 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title Color dots
+    style
+      :stylus
+        body 
+          font 15px/1.5 Helvetica, serif
+          display none
+        .main
+          max-width 800px
+          margin 0 auto
+          margin-top 80px
+          text-align center
+          position relative
+        .clearfix
+          &:after
+            content ''
+            height 0
+            display block
+            visibility hidden
+            clear both
+        .dots
+          margin 20px 0
+        .dot
+          width 20%
+          float left
+          text-align left
+        label 
+          margin 8px 0 5px 0
+          display block
+          font-size 12px
+        input
+          outline none
+          padding 5px 10px
+          border 1px solid #e2e2e2
+          &:focus
+            border-color #5BAAEC
+        .pre
+          position relative
+          text-align left
+          pre
+            background-color #f0f0f0
+            padding 10px 15px
+  body
+    .main
+      h1 Color dots
+      #dots
+      .dots.clearfix
+        .dot(v-for="dot in dots")
+          label(for="bgcolor{{$index}}") Background Color
+          input(v-model="dot['background-color']" id="bgcolor{{$index}}")
+          label(for="borderRadius{{$index}}") Border Radius
+          input(v-model="dot['border-radius']" id="borderRadius{{$index}}")
+      .pre
+        pre
+          code.
+            var dots = new Colordots()
+            var dotsConfig = [
+              {
+                'background-color': '#F9ED69'
+              }, {
+                'background-color': '#F08A5D'  
+              }, {
+                'background-color': '#B83B5E'
+              }, {
+                'background-color': '#6A2C70'  
+              }, {
+                'background-color': '#0B88A8'
+              }]
+            dots.set('dots', dotsConfig)
+            dots.render('#dots')
+    script(src="https://cdn.jsdelivr.net/vue/1.0.0-rc.1/vue.min.js")
+    script(src='./dist/colordots.js?t=#{time}')
+    script.
+      var $ = document.querySelector.bind(document)
+      var dots = new Colordots()
+      var dotsConfig = [
+        {
+          'background-color': '#F9ED69'
+        }, {
+          'background-color': '#F08A5D'  
+        }, {
+          'background-color': '#B83B5E'
+        }, {
+          'background-color': '#6A2C70'  
+        }, {
+          'background-color': '#0B88A8'
+        }]
+      dots.set('dots', dotsConfig)
+      dots.render('#dots')
+      new Vue({
+        el: '.dots',
+        data: function () {
+          return {
+            dots: dotsConfig
+          }
+        },
+        ready: function () {
+          $('body').style.display = 'block'
+          this.$watch('dots', function (oldVal, newVal) {
+              dots.set('dots', this.dots)
+              dots.render('#dots')
+          }, {
+            deep: true
+          })
+        }
+      })
